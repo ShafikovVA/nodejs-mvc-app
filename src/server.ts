@@ -1,7 +1,9 @@
+import dotenv from 'dotenv';
 import http from 'http';
 import router from './lib/routing/routing';
 import { routes } from './routes';
 
+dotenv.config();
 const port: number = 3000;
 
 const server = http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => { 
