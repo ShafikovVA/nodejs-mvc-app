@@ -1,4 +1,5 @@
 import { ServerRequest, ServerResponse } from "../../types";
+import { getRoutingErrors } from "./routing-errors";
 import { IRouter } from "./types";
 
 const router = (routes: IRouter, req: ServerRequest, res: ServerResponse) => {
@@ -14,13 +15,16 @@ const router = (routes: IRouter, req: ServerRequest, res: ServerResponse) => {
 
     const routesArray = Object.entries(routes);
     routesArray.forEach(([routePath, routes]) => {
+        const error = getRoutingErrors(routes, routePath, path, method);
+        if (error) {
+            res.writeHead(404);
+            res.end(JSON.stringify(error))
+        }
         if (path === routePath && Object.hasOwn(routes, method)) {
             routes[method as keyof typeof routes]?.(req, res);
-        } else {
-            res.writeHead(404);
-            res.end(JSON.stringify({ message: 'Route not found' }));
-        }
-    })
+        } 
+      
+    });
 }
 
 export default router;

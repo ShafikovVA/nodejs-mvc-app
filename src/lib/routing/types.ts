@@ -21,3 +21,18 @@ export interface IRouter {
 }
 
 
+
+export type IGetRoutingErrors = (routes: IRoute, routePath: string, path: string, method: string) => IHttpError | undefined;
+
+export enum HttpErrors {
+    GET = 'GET',
+    POST = 'POST',
+    PUT = 'PUT',
+    PATCH = 'PATCH',
+    DELETE = 'DELETE'
+}
+
+export interface IHttpError {
+    code: number,
+    message: string, 
+}
